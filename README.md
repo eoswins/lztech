@@ -1,4 +1,5 @@
 Lz Tech by e0s
+================================
 
 
 
@@ -7,7 +8,7 @@ If you are running the same commands in routers all day and are stuck using teln
 
 Beta coming soon
 --------------------
-+Copy to clipboard feature
-+Add commands dynamically
-+And more!
++ Copy to clipboard feature
++ Add commands dynamically
++ And more!
 
