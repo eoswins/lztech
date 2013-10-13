@@ -6,8 +6,8 @@ Simple web application that connects via telnet to a router and executes a fixed
 If you are running the same commands in routers all day and are stuck using telnet I suggest you take a look.
 
 Beta coming soon
-______________________
--Copy to clipboard feature
--Add commands dynamically
--And more!
+--------------------
++Copy to clipboard feature
++Add commands dynamically
++And more!
 
