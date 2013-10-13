@@ -48,7 +48,7 @@ class Telnet {
 	 * @param int $timeout Connection timeout in seconds
 	 * @return void
 	 */
-	public function __construct($host = '127.0.0.1', $port = '23', $timeout = 10, $prompt = array("$")){
+	public function __construct($host = '127.0.0.1', $port = '23', $timeout = 10, $prompt='$'){
 
 		$this->host = $host;
 		$this->port = $port;
@@ -134,13 +134,13 @@ class Telnet {
 	 * This method is a wrapper for lower level private methods
 	 *
 	 * @param string $command Command to execute
-	 * @return array containing string Command result and array of waitPrompt's success and prompt used
+	 * @return string Command result
 	 */
 	public function exec($command) {
 
 		$this->write($command);
-		$prompt_found = $this->waitPrompt();
-		return array($this->getBuffer(),$prompt_found);
+		$this->waitPrompt();
+		return $this->getBuffer();
 	}
 
 	/**
@@ -156,10 +156,10 @@ class Telnet {
 	public function login($username, $password) {
 
 		try{
-			$this->setPrompt(array('login:'));
+			$this->setPrompt('login:');
 			$this->waitPrompt();
 			$this->write($username);
-			$this->setPrompt(array('Password:'));
+			$this->setPrompt('Password:');
 			$this->waitPrompt();
 			$this->write($password);
 			$this->setPrompt();
@@ -179,7 +179,7 @@ class Telnet {
 	 * @param string $s String to respond to
 	 * @return boolean
 	 */
-	public function setPrompt($s = array('$')){
+	public function setPrompt($s = '$'){
 		$this->prompt = $s;
 		return self::TELNET_OK;
 	}
@@ -208,7 +208,7 @@ class Telnet {
 	 * Reads characters from the socket and adds them to command buffer.
 	 * Handles telnet control characters. Stops when prompt is ecountered.
 	 *
-	 * @param array $prompt
+	 * @param string $prompt
 	 * @return boolean
 	 */
 	protected function readTo($prompt) {
@@ -224,17 +224,13 @@ class Telnet {
 		do {
 			// time's up (loop can be exited at end or through continue!)
 			if (time() > $until_t) {
-				$prompts='';
-				foreach($prompt as $p) $prompts .= $p . " ";
-				throw new Exception("Couldn't find the requested : '$prompts' within {$this->timeout} seconds");
+				throw new Exception("Couldn't find the requested : '$prompt' within {$this->timeout} seconds");
 			}
 
 			$c = $this->getc();
 
 			if ($c === false) {
-				$prompts='';
-				foreach($prompt as $p) $prompts .= $p . " ";
-				throw new Exception("Couldn't find the requested : '" . $prompts . "', it was not in the data returned from server: " . $this->buffer);
+				throw new Exception("Couldn't find the requested : '" . $prompt . "', it was not in the data returned from server: " . $this->buffer);
 			}
 
 			// Interpreted As Command
@@ -248,10 +244,8 @@ class Telnet {
 			$this->buffer .= $c;
 
 			// we've encountered the prompt. Break out of the loop
-			foreach($prompt as $p){
-				if ((substr($this->buffer, strlen($this->buffer) - strlen($p))) == $p){
-					return array(self::TELNET_OK,$p);
-				}
+			if ((substr($this->buffer, strlen($this->buffer) - strlen($prompt))) == $prompt){
+				return self::TELNET_OK;
 			}
 
 		} while($c != $this->NULL || $c != $this->DC1);

@@ -1,0 +1,68 @@
+@CHARSET "UTF-8";
+
+
+body
+{
+	background-color:#FFF;
+	
+}
+
+#main
+{
+	margin-left:50px;
+	margin-right:50px;
+}
+#header
+{
+	position:relative;
+	height:50px;
+	border-bottom:1px solid #000;
+	font-size: 1.5em;
+}
+
+#header-content
+{
+	position:absolute;
+	bottom:0;
+	left:0;
+}
+
+#input
+{
+	margin-top:20px;
+}
+
+#output
+{
+	margin-top:20px;
+
+}
+
+.command_box
+{
+	float:left;
+	margin:20px;
+
+	
+}
+
+.command_title
+{
+	margin:10px;
+
+}
+
+.commands
+{
+	
+	width:300px;
+	height:300px;
+	margin:10px;
+	padding:10px;	
+	overflow:scroll;
+	border:1px solid #000;
+}
+#command1
+{
+	
+}
