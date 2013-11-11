@@ -244,7 +244,7 @@ class Telnet {
 				}
 			}
 
-			// append current char to global buffer
+			// append current char to buffer
 			$this->buffer .= $c;
 
 			// we've encountered the prompt. Break out of the loop
@@ -294,8 +294,9 @@ class Telnet {
 		// cut last line (is always prompt)
 		$buf = explode("\n", $this->buffer);
 		unset($buf[count($buf) - 1]);
-		$buf = implode("\n", $buf);
+		$buf = implode("<br />", $buf);
 		return trim($buf);
+
 	}
 
 	/**

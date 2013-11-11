@@ -4,7 +4,9 @@
 body
 {
 	background-color:#FFF;
-	color: #006680;
+	/*color: #006680;*/
+	color:#00375C;
+	
 }
 
 #main
@@ -38,8 +40,50 @@ body
 {
 	margin-top:20px;
 
+
 }
 
+#hud{
+	
+	background-color:#E6EFF5;
+	border:1px solid #000;
+	width:100%;
+	overflow:hidden;
+}
+
+.hud-box
+{
+	padding:10px;
+	float:left;
+	border-right:1px solid #00375C;
+
+
+
+	
+}
+
+.hud-box td,th
+{
+	text-align:left;
+	padding-top:3px;
+	padding-bottom:3px;
+	padding-left:10px;
+	padding-right:30px;
+}
+
+.hud-table
+{
+	border-top:1px solid #00375C;
+
+
+}
+
+#allcommands
+{
+
+	clear:both;
+	
+}
 .command_box
 {
 	float:left;
@@ -58,22 +102,23 @@ body
 .commands
 {
 	font-family:"Lucida Console", Monaco, monospace;
-	background-color:#F5F9FA;
-	width:500px;
-	/*height:200px;*/
+	/*background-color:#F5F9FA;*/
+	background-color:#E6EFF5;
+	width:600px;
+	height:200px;
 	margin:10px;
 	padding:10px;	
-	/*overflow:scroll;*/
+	overflow-y:auto;
 	
 
 }
 
-.commands::selection
+::selection
 {
 	background-color:#0A2933;
 	color:#CED4D6;
 }
-.commands::-moz-selection
+::-moz-selection
 {
 	background-color:#0A2933;
 	color:#CED4D6;

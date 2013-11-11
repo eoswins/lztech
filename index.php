@@ -20,27 +20,34 @@ $ip = $actionfront->getInput();
 
 if($ip[0]){
 
-	
+	$tel;
 	try{
 		
+		$actionfront->ip = $ip[1];
 		$tel = $actionfront->connectToRouter($ip[1]);
 	
-		//$actionfront->shipintbri = $actionfront->executeCommand($tel,"sh ip int bri");
-		//$actionfront->sharp = executeCommand($tel,"sh arp");
-		//$actionfront->shint = executeCommand($tel,"sh int");
-		//$actionfront->shcontrollers = executeCommand($tel,"sh controllers serial 0");
-		//$actionfront->shlog = $actionfront->executeCommand($tel,"sh log");
-		//$actionfront->shiproute = executeCommand($tel,"sh ip route");
-		//$actionfront->shrun = executeCommand($tel,"sh run");
-		//$actionfront->shpolicy = executeCommand($tel,"sh policy-map int");
-		//$actionfront->shaccess100 = executeCommand($tel,"sh access-list 100");
-		//$actionfront->shver = executeCommand($tel,"sh ver");
+		$actionfront->shipintbri = $actionfront->executeCommand($tel,"sh ip int bri");
+		$actionfront->sharp = $actionfront->executeCommand($tel,"sh arp");
+		$actionfront->shint = $actionfront->executeCommand($tel,"sh int");
+		$actionfront->shcontrollers = $actionfront->executeCommand($tel,"sh controllers serial 0");
+		$actionfront->shlog = $actionfront->executeCommand($tel,"sh log");
+		$actionfront->shclock = $actionfront->executeCommand($tel,"sh clock");
+		$actionfront->shiproute = $actionfront->executeCommand($tel,"sh ip route");
+		$actionfront->shrun = $actionfront->executeCommand($tel,"sh run");
+		$actionfront->shpolicy = $actionfront->executeCommand($tel,"sh policy-map int");
+		$actionfront->shaccess100 = $actionfront->executeCommand($tel,"sh access-list 100");
+		$actionfront->shver = $actionfront->executeCommand($tel,"sh ver");
+		
+		$actionfront->getInterfaces($actionfront->shipintbri);
+		$tel->disconnect();
 
 	}catch (Exception $e){
 
 		$actionfront->tryerror = "Something's gone awry.." . $e->getMessage();
+		if($tel)$tel->disconnect();
 	
 	}
+
 	
 } else $actionfront->iperror = $ip[1];
 

@@ -10,11 +10,16 @@ class Actionfront{
 	public $shint = '';
 	public $shcontrollers = '';
 	public $shlog = '';
+	public $shclock = '';
 	public $shiproute = '';
 	public $shpolicy = '';
 	public $shaccess100 = '';
 	public $shver = '';
 	public $shrun = '';
+	
+	public $interfaces = '';
+	public $workinginterfaces = array();
+	public $intcount = 0;
 	
 	public $tryerror = '';
 	public $iperror = '';
@@ -40,7 +45,7 @@ class Actionfront{
 					return False;
 				}
 			} else{
-				$this->iperror = $this->errors[rand(0,count($this->errors)-1)];
+				$this->tryerror = $this->errors[rand(0,count($this->errors)-1)];
 				return False;
 			}
 			
@@ -60,7 +65,7 @@ class Actionfront{
 	 * @param string $password is the router password
 	 * @return Telnet object
 	 */
-	function connectToRouter($host = "127.0.0.1", $port = 23, $timeout = 10,$prompt = array('Password:'),$login= "33333", $password = "33333"){
+	function connectToRouter($host = "127.0.0.1", $port = 23, $timeout = 900000,$prompt = array('Password:'),$login= "33333", $password = "33333"){
 	
 		$tel = new Telnet($host, $port, $timeout, $prompt);
 		$tel->setPrompt(array(">"));
@@ -92,14 +97,79 @@ class Actionfront{
 			$stillmore;
 	
 			do{
-				$stillmore = $tel->exec(chr(32));
+				$stillmore = $tel->exec(chr(13));
 				$r[0] .= $stillmore[0];
 			}while($stillmore[1][1] == $mor);
-	
+
 			return $r[0];
 	
 		}
 		return $r[0];
+	}
+	
+	function getInterfaces($s){
+		
+		$s = explode('<br />',$s);
+		$s = implode($s);
+		
+		$pattern = "/([\w\d]+)\s+((?:\d{1,3}\.){1,3}\d{1,3}|unassigned)\s+[\w]+\s+[\w]+\s+(administratively [\w]+|[\w]+)\s+([\w]+)/";
+		
+		if(preg_match_all($pattern,$s,$m)){
+			$organized_array = array();
+			
+			for($i=0;$i<count($m[0]);$i++){
+				$addit = array();
+				for($j=0;$j<5;$j++){
+			
+					$addit[] = $m[$j][$i];
+
+				}
+				$organized_array[] = $addit;
+			
+			
+			}
+			
+			$this->interfaces = $organized_array;
+			$this->intcount = count($organized_array);
+			$this->getWorkingInterfaces($organized_array);
+			
+		}else{
+			echo "<span style='color:red'>Regular Expression failed to match</span>";
+			$this->interfaces = 0;
+		}
+	
+	}
+	
+	function getWorkingInterfaces($s){
+		
+		for($i=0; $i<count($s);$i++){
+			
+			if($s[$i][3] == 'up' && $s[$i][4] == 'up'){
+				$this->workinginterfaces[] = $s[$i];
+			}
+		}
+		
+	}
+	
+	
+	function setInterfaces($s){
+		
+		$this->getInterfaces($s);
+		
+		if($this->interfaces!=0){
+			for($i=0;$i<$this->intcount;$i++){
+				
+				$this->int{$i} = $this->interfaces[$i][0];	
+								
+				if($this->interfaces[$i][3] == 'up' && $this->interfaces[$i][4] == 'up'){
+					//echo $this->interfaces[$i][0] . " is UP<br />";
+					$this->int{$i . 'status'} = "UP";
+				}else{
+					$this->int{$i . 'status'} = "DOWN";
+				}
+			}			
+		}
+
 	}
 	
 	
