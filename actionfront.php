@@ -136,6 +136,7 @@ class Actionfront{
 		}else{
 			echo "<span style='color:red'>Regular Expression failed to match</span>";
 			$this->interfaces = 0;
+			//add another property..non-working interfaces
 		}
 	
 	}
@@ -151,26 +152,7 @@ class Actionfront{
 		
 	}
 	
-	
-	function setInterfaces($s){
-		
-		$this->getInterfaces($s);
-		
-		if($this->interfaces!=0){
-			for($i=0;$i<$this->intcount;$i++){
-				
-				$this->int{$i} = $this->interfaces[$i][0];	
-								
-				if($this->interfaces[$i][3] == 'up' && $this->interfaces[$i][4] == 'up'){
-					//echo $this->interfaces[$i][0] . " is UP<br />";
-					$this->int{$i . 'status'} = "UP";
-				}else{
-					$this->int{$i . 'status'} = "DOWN";
-				}
-			}			
-		}
 
-	}
 	
 	
 }
