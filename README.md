@@ -8,7 +8,8 @@ If you are running the same commands in routers all day and are stuck using teln
 
 Beta coming soon
 --------------------
-+ Copy to clipboard feature
-+ Add commands dynamically
-+ And more!
++ 1 Click copying 
++ Ping and traceroute from available up interfaces
++ Execute your own commands right from the web interface
++ Output  intelligent analyzation information of errors and log data
 
