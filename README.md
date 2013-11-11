@@ -11,5 +11,6 @@ Beta coming soon
 + 1 Click copying 
 + Ping and traceroute from available up interfaces
 + Execute your own commands right from the web interface
-+ Output  intelligent analyzation information of errors and log data
++ Output  intelligent  information of interface data and log data
++ Add support for sub interfaces
 
