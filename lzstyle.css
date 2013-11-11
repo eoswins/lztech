@@ -45,15 +45,23 @@ body
 
 #hud{
 	
-	background-color:#E6EFF5;
-	border:1px solid #000;
+
 	width:100%;
 	overflow:hidden;
 }
-
+.hud-title
+{
+	border:1px solid #000;
+	text-align:center;
+	background-color:#E6EFF5;
+	padding:20px;
+	text-decoration:bold;
+	font-size:1.8em;
+}
 .hud-box
 {
-	padding:10px;
+	
+	
 	float:left;
 	border-right:1px solid #00375C;
 
@@ -73,7 +81,9 @@ body
 
 .hud-table
 {
-	border-top:1px solid #00375C;
+	padding:20px;
+	background-color:#FFF;
+
 
 
 }
