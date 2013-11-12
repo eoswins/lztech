@@ -49,7 +49,7 @@ if($ip[0]){
 	}
 
 	
-} else $actionfront->iperror = $ip[1];
+} //took this out; already was updated in actionfront
 
 $webfront->printPage();
 

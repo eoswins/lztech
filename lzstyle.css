@@ -43,11 +43,20 @@ body
 
 }
 
-#hud{
-	
-
-	width:100%;
+#hud-container
+{
+	margin-bottom:50px;
 	overflow:hidden;
+	
+}
+
+.hud{
+	float:left;
+	margin-right:20px;
+	overflow:hidden;
+	border-left:1px solid #000;
+	border-right: 1px solid #000;
+
 }
 .hud-title
 {
@@ -63,7 +72,7 @@ body
 	
 	
 	float:left;
-	border-right:1px solid #00375C;
+
 
 
 
@@ -97,7 +106,8 @@ body
 .command_box
 {
 	float:left;
-	margin:20px;
+	margin-top:20px;
+	margin-right:20px;
 
 	
 }
@@ -116,7 +126,6 @@ body
 	background-color:#E6EFF5;
 	width:600px;
 	height:200px;
-	margin:10px;
 	padding:10px;	
 	overflow-y:auto;
 	

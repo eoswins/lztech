@@ -57,21 +57,24 @@ class Webfront{
   		<div id = "output">
   		
 HTML;
-	if(!empty($this->actionfront->interfaces)){
-			
-			echo "<div id = 'hud'>";
-			echo "<div class = 'hud-box'>";
-			echo "<div class = 'hud-title'>";
-			echo "Interface Summary";
-			echo "</div>";
-  			echo "<div class = 'hud-table'>"; 
-			$header = array("Interface", "Status");
-			echo "<table>";
-			echo "<tr>";
-			echo "<th>Interface</th>";
-			echo "<th>IP Address</th>";
-			echo "<th>Status</th>";
-			echo "</tr>";
+		echo <<<HTML
+		
+			<div id = 'hud-container'>
+				<div class = 'hud'>
+					<div class = 'hud-box'>
+						<div class = 'hud-title'>
+							Interface Summary
+						</div>
+						<div class = 'hud-table'>
+							<table>
+								<tr>
+									<th>Interface</th>
+									<th>IP Address</th>
+									<th>Status</th>
+								</tr>
+HTML;
+		
+		if(!empty($this->actionfront->interfaces)){
 
 			for($i=0;$i<$this->actionfront->intcount;$i++){
 				if($i%2==0)$color = "#CCDEEB";
@@ -85,42 +88,46 @@ HTML;
 				echo "</tr>";
 				
 			}
-			echo "</table>";
-			echo "</div>";
-			echo "</div>";
-			echo "<div class = 'hud-box'>";
-			echo "<div class = 'hud-title'>";
-			echo "Ping Test";
-			echo "</div>";
-			echo "<div class = 'hud-table'>";
-			echo "<table>";
-			echo "<tr>";
-			echo "<th>Source Interface</th>";
-			echo "<th>Destination IP</th>";
-			echo "<th>Go</th>";
-			echo "</tr>";
-			echo "<tr>";
-			echo "<td>";
-			echo "<select>";
+	}
+		echo <<<HTML
+	
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class = 'hud'>
+					<div class = 'hud-box'>
+						<div class = 'hud-title'>
+							Ping Test
+						</div>
+						<div class = 'hud-table'>
+							<table>
+								<tr>
+									<th>Source Interface</th>
+									<th>Destination IP</th>
+									<th>Go</th>
+								</tr>
+								<tr>
+									<td>
+										<select>
+HTML;
+		if(!empty($this->actionfront->interfaces)){
 			for($i=0;$i<count($this->actionfront->workinginterfaces);$i++){
 				echo "<option value='test'>" . $this->actionfront->workinginterfaces[$i][1] . "</option>";
 			}
-			echo "</td>";
-			echo "<td><input type='text'></td>";
-			echo "<td><input type='submit' value='ping'</td>";
-			echo "</tr>";
-			echo "</table>";
-			echo "</div>";
-			echo "</div>";
-  			echo "</div>";
-  			
-
-  			
-
+			
 		}
-	
-	echo <<<HTML
-
+		echo <<<HTML
+										</select>
+									</td>
+									<td><input type='text'></td>
+									<td><input type='submit' value='ping'></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+  			</div>
   			
   			<div id="allcommands">
 		
