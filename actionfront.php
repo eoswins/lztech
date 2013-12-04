@@ -4,6 +4,7 @@ require_once 'telnet.php';
 
 class Actionfront{
 	
+	public $iptraceip = '';
 	public $ip = '';
 	public $sharp = '';
 	public $shipintbri = '';
@@ -37,7 +38,7 @@ class Actionfront{
 				if($matches[1] >=0 && $matches[1] <=255 && $matches[2] >=0 && $matches[2]<=255 && $matches[3] >=0 && $matches[3] <=255 && $matches[4]>=0 && $matches[4] <=255){
 	
 					$ip = $matches[0];
-					return array(True,$ip);
+					return $ip;
 	
 	
 				} else{
@@ -50,6 +51,12 @@ class Actionfront{
 			}
 			
 		}
+		if(isset($_POST['iptraceip'])){
+			$this->iptraceip = $_POST['iptraceip'];
+			return $this->iptraceip;
+		}
+		
+		
 	}
 	
 	/**
@@ -65,7 +72,7 @@ class Actionfront{
 	 * @param string $password is the router password
 	 * @return Telnet object
 	 */
-	function connectToRouter($host = "127.0.0.1", $port = 23, $timeout = 900000,$prompt = array('Password:'),$login= "33333", $password = "33333"){
+	function connectToRouter($host = "127.0.0.1", $port = 23, $timeout = 1000,$prompt = array('Password:'),$login= "33333", $password = "33333"){
 	
 		$tel = new Telnet($host, $port, $timeout, $prompt);
 		$tel->setPrompt(array(">"));

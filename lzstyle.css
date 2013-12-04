@@ -4,22 +4,22 @@
 body
 {
 	background-color:#FFF;
-	/*color: #006680;*/
 	color:#00375C;
 	
 }
 
 #main
 {
-	margin-left:50px;
-	margin-right:50px;
+
 }
 #header
 {
 	position:relative;
-	height:50px;
+	height:100px;
 	border-bottom:1px solid #000;
 	font-size: 1.5em;
+	margin-bottom:50px;
+
 
 }
 
@@ -27,56 +27,52 @@ body
 {
 	position:absolute;
 	bottom:0;
-	left:0;
+	left:50px;
 	color: #000;
+
 }
 
 #input
 {
+	margin-left:50px;
+	margin-right:50px;
 	margin-top:20px;
+	margin-bottom: 50px;
 }
 
 #output
 {
 	margin-top:20px;
+	margin-left:50px;
+	margin-right:50px;
 
 
 }
 
-#hud-container
+.hud-container
 {
+	/* currently grouping interface/ping and commands*/
 	margin-bottom:50px;
 	overflow:hidden;
 	
 }
 
 .hud{
-	float:left;
+	
 	margin-right:20px;
 	overflow:hidden;
-	border-left:1px solid #000;
-	border-right: 1px solid #000;
+
 
 }
 .hud-title
 {
-	border:1px solid #000;
-	text-align:center;
-	background-color:#E6EFF5;
-	padding:20px;
-	text-decoration:bold;
-	font-size:1.8em;
+	font-size:1.2em;
+	display:inline;
 }
 .hud-box
-{
-	
-	
-	float:left;
+{	
+	overflow:hidden;
 
-
-
-
-	
 }
 
 .hud-box td,th
@@ -84,25 +80,23 @@ body
 	text-align:left;
 	padding-top:3px;
 	padding-bottom:3px;
-	padding-left:10px;
+	padding-left:3px;
 	padding-right:30px;
 }
 
 .hud-table
 {
 	padding:20px;
-	background-color:#FFF;
-
-
-
+	float:left;
 }
 
-#allcommands
+#pingtraceio
 {
-
-	clear:both;
-	
+	padding:20px;
+	float:left;	
 }
+
+
 .command_box
 {
 	float:left;
@@ -123,8 +117,7 @@ body
 {
 	font-family:"Lucida Console", Monaco, monospace;
 	/*background-color:#F5F9FA;*/
-	background-color:#E6EFF5;
-	width:600px;
+	width:500px;
 	height:200px;
 	padding:10px;	
 	overflow-y:auto;
@@ -141,4 +134,10 @@ body
 {
 	background-color:#0A2933;
 	color:#CED4D6;
+}
+
+#footer
+{
+	height:200px;
+	border-top:1px solid #000;
 }

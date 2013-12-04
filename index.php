@@ -18,13 +18,13 @@ $webfront = new Webfront($actionfront);
 
 $ip = $actionfront->getInput();
 
-if($ip[0]){
+if($ip){
 
 	$tel;
 	try{
 		
-		$actionfront->ip = $ip[1];
-		$tel = $actionfront->connectToRouter($ip[1]);
+		$actionfront->ip = $ip;
+		$tel = $actionfront->connectToRouter($ip);
 	
 		$actionfront->shipintbri = $actionfront->executeCommand($tel,"sh ip int bri");
 		$actionfront->sharp = $actionfront->executeCommand($tel,"sh arp");
@@ -39,19 +39,21 @@ if($ip[0]){
 		$actionfront->shver = $actionfront->executeCommand($tel,"sh ver");
 		
 		$actionfront->getInterfaces($actionfront->shipintbri);
+		$webfront->printPage();
 		$tel->disconnect();
 
 	}catch (Exception $e){
 
 		$actionfront->tryerror = "Something's gone awry.." . $e->getMessage();
 		if($tel)$tel->disconnect();
+		$webfront->printPage();
 	
 	}
 
 	
-} //took this out; already was updated in actionfront
-
-$webfront->printPage();
+}else if($actionfront->iptraceip){
+	
+}else $webfront->printPage();
 
 
 
