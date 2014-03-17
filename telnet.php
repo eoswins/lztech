@@ -292,7 +292,7 @@ class Telnet {
 	 */
 	protected function getBuffer() {
 		// cut last line (is always prompt)
-		$buf = explode("\n", $this->buffer);
+		$buf = explode("\r\n", $this->buffer);
 		unset($buf[count($buf) - 1]);
 		$buf = implode("<br />", $buf);
 		return trim($buf);

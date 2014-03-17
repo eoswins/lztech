@@ -28,72 +28,285 @@ class Webfront{
   
   <script>
   
+  var wanip = '';
+  var loadingimg = '<img src="loading2.gif">';
+  var bwmonip = '';
+  
   function getRouterInfo(){
-  try{
-  	var ip = document.getElementById("ip").value;
-  	var xmlhttp;
-  	if (window.XMLHttpRequest){
-		//Superior Browsers and IE7+
-		xmlhttp=new XMLHttpRequest();
-  	}else{
-  		//Terrible browsers you would never use, IE6,IE5
-  		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  	}
-  	xmlhttp.onreadystatechange=function(){
-  	//This function gets called on our object's state change
-  		if(xmlhttp.readyState==4 && xmlhttp.status==200){
-  			//update the web interface here with our server's response
-  			document.getElementById("pingtraceio").innerHTML=xmlhttp.responseText
-  			
-  		}
-  	}
-  	
-  	xmlhttp.open("POST",window.location,true);
-  	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
-  	xmlhttp.send("ip="+ip);
-  }catch(err){
-  	alert(err.message);
-  }
+	  document.getElementById("errorz").innerHTML = '';
+	  try{
+	  	var ip = document.getElementById("ip").value;
+	  	var xmlhttp;
+	  	var xmlDoc;
+	  	if (window.XMLHttpRequest){
+			//Superior Browsers and IE7+
+			xmlhttp=new XMLHttpRequest();
+	  	}else{
+	  		//Terrible browsers you would never use, IE6,IE5
+	  		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  	}
+	  	xmlhttp.onreadystatechange=function(){
+	  	//This function gets called on our object's state change
+	  		if(xmlhttp.readyState==1){
+	  			document.getElementById("loading1").innerHTML = loadingimg;
+	  		}
+	  		if(xmlhttp.readyState==2){
+	  			document.getElementById("loading1").innerHTML = loadingimg;
+	  		}
+	  		if(xmlhttp.readyState==3){
+	  			document.getElementById("loading1").innerHTML = loadingimg;
+	  		}
+	  		if(xmlhttp.readyState==4 && xmlhttp.status==200){
+	
+	  			//update the web interface here with our server's response
+	  			xmlDoc = xmlhttp.responseXML;
+	  			if(xmlDoc.getElementsByTagName("commandsummary").length>0){
+	
+	  			
+	  				wanip = ip;	
+	  			
+		  			document.getElementById("bri").innerHTML = xmlDoc.getElementsByTagName("shbri")[0].childNodes[0].nodeValue;
+		  			document.getElementById("arp").innerHTML = xmlDoc.getElementsByTagName("sharp")[0].childNodes[0].nodeValue;
+		  			document.getElementById("int").innerHTML = xmlDoc.getElementsByTagName("shint")[0].childNodes[0].nodeValue;
+		  			document.getElementById("con").innerHTML = xmlDoc.getElementsByTagName("shcon")[0].childNodes[0].nodeValue;
+		  			document.getElementById("log").innerHTML = xmlDoc.getElementsByTagName("shlog")[0].childNodes[0].nodeValue;
+		  			document.getElementById("clo").innerHTML = xmlDoc.getElementsByTagName("shclo")[0].childNodes[0].nodeValue;
+		  			document.getElementById("rou").innerHTML = xmlDoc.getElementsByTagName("shrou")[0].childNodes[0].nodeValue;
+		  			document.getElementById("run").innerHTML = xmlDoc.getElementsByTagName("shrun")[0].childNodes[0].nodeValue;
+		   			document.getElementById("qos").innerHTML = xmlDoc.getElementsByTagName("shqos")[0].childNodes[0].nodeValue;
+		  			document.getElementById("acc").innerHTML = xmlDoc.getElementsByTagName("sh100")[0].childNodes[0].nodeValue;
+		  			document.getElementById("ver").innerHTML = xmlDoc.getElementsByTagName("shver")[0].childNodes[0].nodeValue;
+		  			
+		  			document.getElementById("featurecheck").innerHTML = xmlDoc.getElementsByTagName("featurecheck")[0].childNodes[0].nodeValue;
+		  			document.getElementById("intsum").innerHTML = xmlDoc.getElementsByTagName("intsum")[0].childNodes[0].nodeValue;
+		  			document.getElementById("workint").innerHTML = xmlDoc.getElementsByTagName("workint")[0].childNodes[0].nodeValue;
+		  			document.getElementById("tablecheck").innerHTML = xmlDoc.getElementsByTagName("tablecheck")[0].childNodes[0].nodeValue;
+	  			
+	  			}else if (xmlDoc.getElementsByTagName("connect_error").length>0){
+	
+	  				document.getElementById("errorz").innerHTML = xmlDoc.getElementsByTagName("connect_error")[0].getAttribute("error");
+	  			}else if (xmlDoc.getElementsByTagName("range_error").length>0){
+	
+	  				document.getElementById("errorz").innerHTML = xmlDoc.getElementsByTagName("range_error")[0].getAttribute("error");
+	  				
+	  			}else if (xmlDoc.getElementsByTagName("invalid_ip_error").length>0){
+	
+	  				document.getElementById("errorz").innerHTML = xmlDoc.getElementsByTagName("invalid_ip_error")[0].getAttribute("error");
+	  			}
+	  		}
+	  		if(xmlhttp.readyState!=1 && xmlhttp.readyState!=2 && xmlhttp.readyState!=3) document.getElementById("loading1").innerHTML = '';
+	  		
+	  		
+	  	}
+	  	
+	  	xmlhttp.open("POST",window.location,true);
+	  	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+	  	xmlhttp.send("ip="+ip);
+	  }catch(err){
+	  	alert(err.message);
+	  }
   
   }
   
 
   function pingtrace(){
-  try{
-  	var ip = document.getElementById("iptraceip").value;
-  	var xmlhttp;
-  	if (window.XMLHttpRequest){
-		//Superior Browsers and IE7+
-		xmlhttp=new XMLHttpRequest();
-  	}else{
-  		//Terrible browsers you would never use, IE6,IE5
-  		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  	}
-  	xmlhttp.onreadystatechange=function(){
-  	//This function gets called on our object's state change
-  		if(xmlhttp.readyState==4 && xmlhttp.status==200){
-  			//update the web interface here with our server's response
-  			document.getElementById("pingtraceio").innerHTML=xmlhttp.responseText;
-  		}
-  	}
+	  try{
+	  	var ip = document.getElementById("iptrace").value;
+	  	var action = '';
+	  	var int = document.getElementById("interfaces");
+	  	var selectedint = int.options[int.selectedIndex].value;
+	  	if(document.getElementById("traceroute").checked){
+	  		action = "traceroute";
+	  	}else action = "ping";
+	  	var xmlhttp;
+	  	if (window.XMLHttpRequest){
+			//Superior Browsers and IE7+
+			xmlhttp=new XMLHttpRequest();
+	  	}else{
+	  		//Terrible browsers you would never use, IE6,IE5
+	  		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  	}
+	  	xmlhttp.onreadystatechange=function(){
+	  	//This function gets called on our object's state change
+	  	
+	  		if(xmlhttp.readyState==1){
+	  			document.getElementById("loading2").innerHTML = loadingimg;
+	  		}
+	  		if(xmlhttp.readyState==2){
+	  			document.getElementById("loading2").innerHTML = loadingimg;
+	  		}
+	  		if(xmlhttp.readyState==3){
+	  			document.getElementById("loading2").innerHTML = loadingimg;
+	  		}
+	  		if(xmlhttp.readyState==4 && xmlhttp.status==200){
+	  			//update the web interface here with our server's response
+	  			xmlDoc = xmlhttp.responseXML;
+	  			if(xmlDoc.getElementsByTagName("ptresult").length>0){
+	  				document.getElementById("pingtraceio").innerHTML=xmlDoc.getElementsByTagName("ptresult")[0].childNodes[0].nodeValue;
+	  			}else if(xmlDoc.getElementsByTagName("pterror").length>0){
+	  				document.getElementById("pterrorz").innerHTML=xmlDoc.getElementsByTagName("pterror")[0].getAttribute("error");
+	  			}else if(xmlDoc.getElementsByTagName("range_error").length>0){
+	  				document.getElementById("pterrorz").innerHTML=xmlDoc.getElementsByTagName("range_error")[0].getAttribute("error");
+	  			}else if(xmlDoc.getElementsByTagName("invalid_ip_error").length>0){
+	  				document.getElementById("pterrorz").innerHTML=xmlDoc.getElementsByTagName("invalid_ip_error")[0].getAttribute("error");
+	  			}else if(xmlDoc.getElementsByTagName("invalid_action_error").length>0){
+	  				document.getElementById("pterrorz").innerHTML=xmlDoc.getElementsByTagName("invalid_action_error")[0].getAttribute("error");
+	  			}else if(xmlDoc.getElementsByTagName("invalid_int_error").length>0){
+	  				document.getElementById("pterrorz").innerHTML=xmlDoc.getElementsByTagName("invalid_int_error")[0].getAttribute("error");
+	  			}
+	  		}
+	  		if(xmlhttp.readyState!=1 && xmlhttp.readyState!=2 && xmlhttp.readyState!=3) document.getElementById("loading2").innerHTML = '';
+	  	}
+	  	
+	  	xmlhttp.open("POST",window.location,true);
+	  	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+	  	xmlhttp.send("iptrace="+ip+"&pt="+action+"&interface="+selectedint+"&wanip="+wanip);
+	  }catch(err){
+	  	alert(err.message);
+	  }
+  
+  }
+  
+	function showProgram(p){
+	    if(p=="lztechmain"){
+	  		document.getElementById("lztechmain").style.display="block";
+	  		document.getElementById("bwmon").style.display="none";
+	  		document.getElementById("lztechbutton").style.borderWidth="1px 1px 4px 1px";
+	  		document.getElementById("bwmonbutton").style.borderWidth="1px 1px 1px 1px";
+	  	}else if(p=="bwmon"){
+	  	  	document.getElementById("bwmon").style.display="block";
+	  		document.getElementById("lztechmain").style.display="none";
+	  		document.getElementById("bwmonbutton").style.borderWidth="1px 1px 4px 1px";
+	  		document.getElementById("lztechbutton").style.borderWidth="1px 1px 1px 1px";
+	  	}
   	
-  	xmlhttp.open("POST",window.location,true);
-  	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
-  	xmlhttp.send("iptraceip=test");
-  }catch(err){
-  	alert(err.message);
-  }
-  
-  }
-  
-  function showHide(d){
-  	if(document.getElementById(d).style.display=='none'){
-  		document.getElementById(d).style.display='block';
-  	}else document.getElementById(d).style.display='none';
-  
   	
+	}
+	
+  
+	function selectText(containerid) {
+        if (document.selection) {
+            var range = document.body.createTextRange();
+            range.moveToElementText(document.getElementById(containerid));
+            range.select();
+        } else if (window.getSelection) {
+            var range = document.createRange();
+            range.selectNode(document.getElementById(containerid));
+            window.getSelection().addRange(range);
+        }
+    }
+ <!-- BWMON SCRAPPED ..FOR NOW------------------------------------------------------
+  	//-----------bwmon functions-----------------//
+  	
+  	function bwmonWan(){
+	  try{
+	  	var ip = document.getElementById("bwmonip").value;
+	  	bwmonip = ip;
+	  	var xmlhttp;
+	  	if (window.XMLHttpRequest){
+			//Superior Browsers and IE7+
+			xmlhttp=new XMLHttpRequest();
+	  	}else{
+	  		//Terrible browsers you would never use, IE6,IE5
+	  		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  	}
+	  	xmlhttp.onreadystatechange=function(){
+	  	//This function gets called on our object's state change
+	  	
+	  		if(xmlhttp.readyState==1){
+	  			document.getElementById("bwmonloading1").innerHTML = loadingimg;
+	  		}
+	  		if(xmlhttp.readyState==2){
+	  			document.getElementById("bwmonloading1").innerHTML = loadingimg;
+	  		}
+	  		if(xmlhttp.readyState==3){
+	  			document.getElementById("bwmonloading1").innerHTML = loadingimg;
+	  		}
+	  		if(xmlhttp.readyState==4 && xmlhttp.status==200){
+	  			//update the web interface here with our server's response
+	  			xmlDoc = xmlhttp.responseXML;
+	  			
+	  			document.getElementById("bwmoncreate2").innerHTML = xmlDoc.getElementsByTagName("step2")[0].getAttribute("step2");
+	  			bwmonip = xmlDoc.getElementsByTagName("step2")[0].getAttribute("bwmonip");
+	  		}
+	  		if(xmlhttp.readyState!=1 && xmlhttp.readyState!=2 && xmlhttp.readyState!=3) document.getElementById("bwmonloading1").innerHTML = '';
+	  	}
+	  	
+	  	xmlhttp.open("POST",window.location,true);
+	  	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+	  	xmlhttp.send("bwmonip="+ip);
+	  }catch(err){
+	  	alert(err.message);
+	  }
+	  
   }
   
+	function bwmonExecute(){
+	  	try{
+	  		var ip = bwmonip;
+		  	var int = document.getElementById("bwmonint");
+	  		var selectedint = int.options[int.selectedIndex].value;
+	  		var interval = document.getElementById("bwmoninterval");
+	  		var selectedinterval = interval.options[interval.selectedIndex].value;
+	  		var lifecycle = document.getElementById("bwmonlifecycle");
+	  		var selectedlifecycle = lifecycle.options[lifecycle.selectedIndex].value;
+	   		var cronname = document.getElementById("cronname").value;
+	  		
+		  	var xmlhttp;
+		  	if (window.XMLHttpRequest){
+				//Superior Browsers and IE7+
+				xmlhttp=new XMLHttpRequest();
+		  	}else{
+		  		//Terrible browsers you would never use, IE6,IE5
+		  		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		  	}
+		  	xmlhttp.onreadystatechange=function(){
+		  	//This function gets called on our object's state change
+		  	
+		  		if(xmlhttp.readyState==1){
+		  			document.getElementById("bwmonloading2").innerHTML = loadingimg;
+		  		}
+		  		if(xmlhttp.readyState==2){
+		  			document.getElementById("bwmonloading2").innerHTML = loadingimg;
+		  		}
+		  		if(xmlhttp.readyState==3){
+		  			document.getElementById("bwmonloading2").innerHTML = loadingimg;
+		  		}
+		  		if(xmlhttp.readyState==4 && xmlhttp.status==200){
+		  			//update the web interface here with our server's response
+		  			xmlDoc = xmlhttp.responseXML;
+		  			
+		  			document.getElementById("bwmoncreate2").innerHTML = xmlDoc.getElementsByTagName("croncomplete")[0].getAttribute("croncomplete");
+		  		}
+		  		if(xmlhttp.readyState!=1 && xmlhttp.readyState!=2 && xmlhttp.readyState!=3) document.getElementById("bwmonloading2").innerHTML = '';
+		  	}
+		  	
+		  	xmlhttp.open("POST",window.location,true);
+		  	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+		  	xmlhttp.send("bwmonipexe="+ip+"&int="+selectedint+"&interval="+selectedinterval+"&lifecycle="+selectedlifecycle+"&cronname="+cronname);
+		  }catch(err){
+		  	alert(err.message);
+		  }
+		  
+  }
+  
+	function showBwOption(i){
+		
+		if(i=="bwmonsearch"){
+			document.getElementById(i).style.display="block";
+			document.getElementById("bwmoncreate").style.display="none";
+	  		document.getElementById("bwslink").style.borderBottomWidth="4px";
+	  		document.getElementById("bwclink").style.borderBottomWidth="1px";
+		}else{
+			document.getElementById("bwmoncreate").style.display="block";
+			document.getElementById("bwmonsearch").style.display="none";
+	  		document.getElementById("bwslink").style.borderBottomWidth="1px";
+	  		document.getElementById("bwclink").style.borderBottomWidth="4px";
+		}
+			
+	
+	}
+  	-->
   </script>
 		
   </head>
@@ -108,238 +321,245 @@ class Webfront{
   			<div id = "header-content">
   				Lz Tech_(v.0.0.1 alpha)
   			</div>
-		
-  		</div>
-		
-  		<div id = "input">
 
-		  	IP: <input type="text" id = "ip" value="{$this->actionfront->ip}">
-		  	<input type='submit' value='Go' onclick="getRouterInfo()">
-
-		
-		    <br />
-		    <span style="color:red">{$this->actionfront->tryerror}</span>
-		    <span style="color:red">{$this->actionfront->iperror}</span>
-		
-		
   		</div>
-		
-  		<div id = "output">
   		
-HTML;
-		echo <<<HTML
+  		<div id = "program-tuple">
+  			<a href="#" id = "lztechbutton" style = "border-width:1px 1px 4px 1px" onclick="showProgram('lztechmain');return false;">LZ Tech Main</a>
+  			<!--<a href="#" id = "bwmonbutton" onclick="showProgram('bwmon');return false;">Bandwidth Monitor</a> BWMON SCRAPPED ..FOR NOW -->
+  				  				
+  		</div>
+  		
+  		<div id = "lztechmain">
 		
-			<div class = "hud-container">
-				<div class = "hud">
-					<div class = "hud-title" onclick="showHide('inthide')">
-						<span style = "font-size:1.9em">+</span><span style = "text-decoration:underline">Interface Summary</span>
-					</div>
-					<div class = "hud-box" id = "inthide">
-						<div class = "hud-table">
-							<table>
-								<tr>
-									<th>Interface</th>
-									<th>IP Address</th>
-									<th>Status</th>
-								</tr>
-HTML;
-		
-		if(!empty($this->actionfront->interfaces)){
-
-			for($i=0;$i<$this->actionfront->intcount;$i++){
-				if($i%2==0)$color = "#CCDEEB";
-				else $color = "#E6EFF5";
-				echo "<tr style='background-color:$color'>";
-				if($this->actionfront->interfaces[$i][3] == 'up' && $this->actionfront->interfaces[$i][4] == 'up'){
-
-					echo "<td>" . $this->actionfront->interfaces[$i][1] . "</td>" . "<td>" . $this->actionfront->interfaces[$i][2] . "</td>" . "<td><span style='color:green'>UP</span></td>";
-				}else echo "<td>" . $this->actionfront->interfaces[$i][1] . "</td>" . "<td>" . $this->actionfront->interfaces[$i][2] . "</td>" . "<td><span style='color:red'>DOWN</span></td>";
+	  		<div id = "input">
 				
-				echo "</tr>";
-				
-			}
-	}
-		echo <<<HTML
+	  			<table>
+	  				<tr>
+						<td>IP: <input type="text" id = "ip"></td>
+						<td><input type='submit' value='Go' onclick="getRouterInfo()"></td>
+						<td height="60" id="loading1"></td>
+					</tr>
+				</table>
 	
-							</table>
+			    <br />
+			    <span id = "errorz" style="color:red"></span>
+	
+	  		</div>
+			
+	  		<div id = "output">
+	
+				<div class = "hud-container">
+					<div class = "hud">
+						<div class = "hud-title">
+							Router Summary
+						</div>
+						<div class = "hud-box">
+							<div class = "hud-table" id = "featurecheck">
+	
+							</div>
+							<div class = "hud-table" id = "intsum">
+	
+							</div>
+							<div class = "hud-table" id = "tablecheck">
+	
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class = "hud">
-					<div class = "hud-title" onclick="showHide('pthide')">
-						<span style = "font-size:1.9em">+</span><span style = "text-decoration:underline">Ping/Traceroute Test</span>
-					</div>
-					<div class = "hud-box" id = "pthide">
-						<div class = "hud-table">
-							<table>
-								<tr>
-									<th>Source Interface</th>
-									<th>Action</th>
-									<th>Destination IP</th>
-								</tr>
-								<tr>
-									<td>
-										<select>
-HTML;
-		if(!empty($this->actionfront->interfaces)){
-			for($i=0;$i<count($this->actionfront->workinginterfaces);$i++){
-				echo "<option value='test'>" . $this->actionfront->workinginterfaces[$i][1] . "</option>";
-			}
-			
-		}
-		echo <<<HTML
-										</select>
-									</td>
-									<td><form action="">
-											<input type="radio" name="action" value="ping">Ping<br>
-											<input type="radio" name="action" value="traceroute">Traceroute
-										</form>
-									</td>
-									<td><input type='text' id='iptraceip' value=""></td>
-									<td><input type='submit' value='Go' onclick="pingtrace()"></td>
-								</tr>
-							</table>
+				
+				<div class = "hud-container">
+					<div class = "hud">
+						<div class = "hud-title">
+							Ping/Traceroute Test
 						</div>
-						<div id = "pingtraceio">
-						
+						<div class = "hud-box" id = "workint">
 							
 						</div>
 					</div>
-				</div>
-  			</div>
-  			
-  			<div class = "hud-container">
-  				
-  				<div class = "hud">
-  					
-  					<div class = "hud-title" onclick="showHide('comhide')">
-  						
-  						<span style = "font-size:1.9em">+</span><span style = "text-decoration:underline">Command Summary</span>
-  					
-  					</div>
-  					
-  					<div class = "hud-box" id = "comhide">
-		
-			  			<div class = "command_box">
-			  				<div class = "command_title">
-			  					Show ip interface brief
-			  				</div>
-					  			<div class = "commands" id = "bri">
-					  				{$this->actionfront->shipintbri}
+	  			</div>
+	  			
+	  			<div class = "hud-container">
+	  				
+	  				<div class = "hud">
+	  					
+	  					<div class = "hud-title">
+	  						
+	  						Command Summary
+	  					
+	  					</div>
+	  					
+	  					<div class = "hud-box">
 			
-					
-					  			</div>
-			  			</div>
-			  
-			  			<div class = "command_box">
-			  				<div class = "command_title">
-			  					Show arp
-			  				</div>
-					  			<div class = "commands" id="arp">
-					  				{$this->actionfront->sharp}
-			
-					
-					  			</div>
-			  			</div>
-					
-			  			<div class = "command_box">
-			  				<div class = "command_title">
-			  					Show interfaces
-			  				</div>
-					  			<div class = "commands" id="int">
-					  				{$this->actionfront->shint}
-			
-					  			</div>
-			  			</div>
-			  
-			   			<div class = "command_box">
-			  				<div class = "command_title">
-			  					Show controllers t1
-			  				</div>
-					  			<div class = "commands" id="con">
-					  				{$this->actionfront->shcontrollers}
-			
-			
-					  			</div>
-			  			</div>
-			  
-			   			<div class = "command_box">
-			  				<div class = "command_title">
-			  					Show log
-			  				</div>
-					  			<div class = "commands" id="log">
-					  				{$this->actionfront->shlog}
-			
-					  			</div>
-			  			</div>
-			  			
-			   			<div class = "command_box">
-			  				<div class = "command_title">
-			  					Show clock
-			  				</div>
-					  			<div class = "commands" id="clock">
-					  				{$this->actionfront->shclock}
-			
-					  			</div>
-			  			</div>
-			  
-			   			<div class = "command_box">
-			  				<div class = "command_title">
-			  					Show ip route
-			  				</div>
-					  			<div class = "commands" id="rou">
-					  				{$this->actionfront->shiproute}
-			
-					  			</div>
-			  			</div>
-			  
-			  			<div class = "command_box">
-			  				<div class = "command_title">
-			  					Show run
-			  				</div>
-					  			<div class = "commands" id="run">
-					  				{$this->actionfront->shrun}
-					  			</div>
-			  			</div>
-			  
-			  			<div class = "command_box">
-			  				<div class = "command_title">
-			  					Show policy-map int
-			  				</div>
-					  			<div class = "commands" id="map">
-					  				{$this->actionfront->shpolicy}
-					  			</div>
-			  			</div>
-			  
-			   			<div class = "command_box">
-			  				<div class = "command_title">
-			  					Show access-list 100
-			  				</div>
-					  			<div class = "commands" id="acc">
-					  				{$this->actionfront->shaccess100}
-					  			</div>
-			  			</div>
-			  
-			  			<div class = "command_box">
-			  				<div class = "command_title">
-			  					Show version
-			  				</div>
-					  			<div class = "commands" id="ver">
-					  				{$this->actionfront->shver}
-					  			</div>
-			  			</div>
+				  			<div class = "command_box">
+				  				<div class = "command_title">
+				  				</div>
+						  			<div class = "commands" id = "bri" onclick="selectText('bri')">
+	
+						
+						  			</div>
+				  			</div>
+				  
+				  			<div class = "command_box">
+				  				<div class = "command_title">
+				  				</div>
+						  			<div class = "commands" id="arp" onclick="selectText('arp')">
+				
+						
+						  			</div>
+				  			</div>
+						
+				  			<div class = "command_box">
+				  				<div class = "command_title">
+				  				</div>
+						  			<div class = "commands" id="int" onclick="selectText('int')">
+				
+						  			</div>
+				  			</div>
+				  
+				   			<div class = "command_box">
+				  				<div class = "command_title">
+				  				</div>
+						  			<div class = "commands" id="con" onclick="selectText('con')">
+				
+				
+						  			</div>
+				  			</div>
+				  
+				   			<div class = "command_box">
+				  				<div class = "command_title">
+				  				</div>
+						  			<div class = "commands" id="log" onclick="selectText('log')">
+	
+				
+						  			</div>
+				  			</div>
+				  			
+				   			<div class = "command_box">
+				  				<div class = "command_title">
+				  				</div>
+						  			<div class = "commands" id="clo" onclick="selectText('clo')">
+	
+						  			</div>
+				  			</div>
+				  
+				   			<div class = "command_box">
+				  				<div class = "command_title">
+				  				</div>
+						  			<div class = "commands" id="rou" onclick="selectText('rou')">
+	
+						  			</div>
+				  			</div>
+				  
+				  			<div class = "command_box">
+				  				<div class = "command_title">
+				  				</div>
+						  			<div class = "commands" id="run" onclick="selectText('run')">
+	
+						  			</div>
+				  			</div>
+				  
+				  			<div class = "command_box">
+				  				<div class = "command_title">
+				  				</div>
+						  			<div class = "commands" id="qos" onclick="selectText('qos')">
+	
+						  			</div>
+				  			</div>
+				  
+				   			<div class = "command_box">
+				  				<div class = "command_title">
+				  				</div>
+						  			<div class = "commands" id="acc" onclick="selectText('acc')">
+	
+						  			</div>
+				  			</div>
+				  
+				  			<div class = "command_box">
+				  				<div class = "command_title">
+				  				</div>
+						  			<div class = "commands" id="ver" onclick="selectText('ver')">
+	
+						  			</div>
+				  			</div>
+				  			
+				  		</div>
 			  			
 			  		</div>
 		  			
 		  		</div>
-	  			
+			
 	  		</div>
-		
-  		</div>
+	  		
+	  	</div>
+<!-- BW MONITOR SCRAPPED ..FOR NOW--------------------------------------------------------------------
+	  	
+	  	<div id = "bwmon" style="display:none">
+	  	
+	  		<div id = "bwmoninput">
+	  			
+	  			
+	  			<div id="bwmonlinks">
+	  				
+	  				<ul>
+		  				<li><a href="#" id="bwslink" style="border-bottom:4px solid #000" onclick="showBwOption('bwmonsearch')">Search</a></li>
+		  				<li><a href="#" id="bwclink" onclick="showBwOption('bwmoncreate')">Create</a></li>
+		  			</ul>
+
+	  			
+	  			</div>
+
+	  			<div id="bwmoncreate" style="display:none">
+	  			
+	  				<div id="bwmoncreate1">
+
+		  		
+			  			<h4>Enter the WAN IP of the circuit you wish to monitor</h4>
+						
+			  			<table>
+			  				<tr>
+								<td>IP: <input type="text" id = "bwmonip"></td>
+								<td><input type='submit' value='Go' onclick="bwmonWan()"></td>
+								<td height="60" id="bwmonloading1"></td>
+							</tr>
+						</table>
+			
+					    <br />
+					    <span id = "errorz" style="color:red"></span>
+				    
+				    </div>
+				    
+					<div id = "bwmoncreate2">
+				
+					</div>
+					
+				</div>
+				
+				<div id="bwmonsearch">
+				
+			  			<h4>Search for an existing Monitor</h4>
+						
+			  			<table>
+			  				<tr>
+								<td>Name: <input type="text" id = "bwmonip"></td>
+								<td><input type='submit' value='Go' onclick="bwmonWan()"></td>
+								<td height="60" id="bwmonloading1"></td>
+							</tr>
+						</table>
+			
+					    <br />
+					    <span id = "errorz" style="color:red"></span>
+				
+				
+				</div>
+				
+				
+	  		</div>
+	  	</div> -->
   		
-  		<div id = "footer">
-  		
-  		</div>
+  		<!--<div id = "footer">
+
+  		</div>-->
   	</div>
 		
 		

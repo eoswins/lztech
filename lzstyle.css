@@ -1,5 +1,9 @@
 @CHARSET "UTF-8";
 
+*{
+	padding:0;
+	margin:0;
+}
 
 body
 {
@@ -18,7 +22,7 @@ body
 	height:100px;
 	border-bottom:1px solid #000;
 	font-size: 1.5em;
-	margin-bottom:50px;
+	background-color:#E6EFF5;
 
 
 }
@@ -29,21 +33,103 @@ body
 	bottom:0;
 	left:50px;
 	color: #000;
+	padding:10px;
+}
+
+#program-tuple
+{
+	height:50px;
+	margin-left:80px;
+	
+}
+#program-tuple a
+{
+	display:block;
+	float:left;
+	margin-right:10px;
+	border:1px solid #000;
+	padding:10px;
+	text-decoration:none;
+	color:#000;
+	background-color:#CCDEEB;
 
 }
 
+#program-tuple a:hover
+{
+	background-color:#E6EFF5;
+}
 #input
 {
+
+	float:clear;
+
 	margin-left:50px;
+	margin-right:50px;
+	margin-top:20px;
+	margin-bottom: 50px;
+
+}
+
+
+
+#bwmoninput
+{
+
 	margin-right:50px;
 	margin-top:20px;
 	margin-bottom: 50px;
 }
 
+#bwmonlinks
+{
+	margin-bottom:50px;
+	width:210px;
+	float:left;
+	margin-right:50px;
+	
+}
+
+#bwmonlinks a
+{
+	width:50px;
+	margin-bottom:10px;
+	display:block;
+	margin-right:10px;
+	border:1px solid #000;
+	padding:5px 80px 5px 80px;
+	text-decoration:none;
+	color:#000;
+	background-color:#CCDEEB;
+
+}
+#bwmonlinks ul
+{
+	list-style-type:none;
+}
+
+#bwmonlinks a:hover
+{
+	background-color:#E6EFF5;
+}
+
+#bwmoncreate
+{
+	float:left;
+}
+#bwmonsearch
+{
+	float:left;
+}
+
+#loading1
+{
+
+}
+
 #output
 {
 	margin-top:20px;
-	margin-left:50px;
 	margin-right:50px;
 
 
@@ -52,7 +138,7 @@ body
 .hud-container
 {
 	/* currently grouping interface/ping and commands*/
-	margin-bottom:50px;
+	margin-bottom:90px;
 	overflow:hidden;
 	
 }
@@ -67,11 +153,16 @@ body
 .hud-title
 {
 	font-size:1.2em;
-	display:inline;
+	color:#000;
+	padding-left:80px;
+	border-bottom:1px solid #A9B3BC;
+
+	
 }
 .hud-box
 {	
 	overflow:hidden;
+	margin-left:50px;
 
 }
 
@@ -94,6 +185,7 @@ body
 {
 	padding:20px;
 	float:left;	
+	overflow-y:auto;
 }
 
 
@@ -140,4 +232,5 @@ body
 {
 	height:200px;
 	border-top:1px solid #000;
+	
 }
